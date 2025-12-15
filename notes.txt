@@ -1,0 +1,70 @@
+# Chapter 1
+
+We use pnpm instead of npm since it's faster.
+
+# Chapter 2
+
+global.css: Adds css rules to all the routes in your application
+Tailwind: A CSS framework that has a ton of builtin utility classes
+CSS Modules: Scope CSS to a particular component, so you don't have to worry about collisions.
+             All class names are transformed during builds to be unique.
+clsx: A simple library that allows you to toggle class names dynamically. Pretty simple stuff.
+
+# Chapter 3
+
+Next.js automatically optimizes the fonts in the application when you use next/font.
+This helps so when the user visits your application there's no additional network requests
+bogging down the system before rendering can complete. It statically hosts the fonts.
+
+*Importing fonts*
+  Create a fonts.ts file and export all your fonts as variables when you declare them:
+      import { Inter } from 'next/font/google';
+      import { Lusitana } from 'next/font/google';
+      
+      export const inter = Inter({ subsets: ['latin'] });
+      export const lusitana = Lusitana({ subsets: ['latin'], weight: ['400'] });
+  
+  To use them you simply add ${inter.className} to the class of any tag that you want to
+  apply the font to.
+
+  Also you can add cool stuff like this
+       import { GlobeAltIcon } from '@heroicons/react/24/outline';
+
+*Images*
+  The reason we don't just do <img src="..."/> is so we can let next.js
+  ensure the image is responsive on different screen sizes, specify image
+  sizes for different devices, prevent weird layout issues, and lazy load
+  images that are outside the user's viewport.
+
+  You can use the 'next/image' component to automatically optimize these.
+
+    - Prevent layout shift automatically when images are loading
+    - Resizing images to avoid shipping large images to devices with a small viewport
+    - Lazy loading images by default as they enter the viewport
+    - Serving images in modern formats like WebP or AVIF if the browser supports it.
+
+  The image width and height attributes in the <Image /> component are not the
+  size of the image that is rendered like in HTML <img/> but rather the size
+  of the actual image file to determine the aspect ratio.
+
+# Chapter 4
+
+The app router converts file paths from the app/ directory into URL paths.
+Each subfolder, (eg. app/dashboard/) can have a page.tsx which is a special
+Next.js file that exports a React component & is required to route that page.
+
+Note that app/page.tsx is the home page that is associated with the '/' route.
+
+The layout.tsx file is one that allows you to share layout between multiple
+pages. For instance, in dashboard/layout.tsx, every sub-route will have that
+layout. Likewise, the default /layout.tsx is applied to everything in your
+application.
+
+# Chapter 5
+
+We can use <Link/> instead of <a/> to go between apges in our application so
+we can utilize client-side navigation, rather than having to reload the entire
+page when we click on an <a> tag.
+
+Next.js also prefetches the content of each linked routes for the user,
+rendering it in the background for the user.
