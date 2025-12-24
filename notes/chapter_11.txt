@@ -1,0 +1,31 @@
+# Chapter 11 - Mutating Data
+
+We have server components where you do 'use server',
+and the function runs on the server. These components
+can only be used as POST requests, like when sending
+form data.
+
+---
+
+There's this thing called zod which is a library that
+handles data validation. You just define an object
+with the syntax, like so...
+
+import { z } from 'zod';
+
+  const FormSchema = z.object({
+    id: z.string(),
+    customerId: z.string(),
+    amount: z.coerce.number(),
+    status: z.enum(['pending', 'paid']),
+    date: z.string(),
+  });
+
+  const CreateInvoice = FormSchema.omit({ id: true, date: true }); // this is the schema for an invoice
+
+... and when you're ready to validate, you do
+  const { customerId, amount, status } = CreateInvoice.parse({
+    customerId: formData.get('customerId'),
+    amount: formData.get('amount'),
+    status: formData.get('status'),
+  });
