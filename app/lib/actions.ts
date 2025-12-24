@@ -5,6 +5,9 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import postgres from 'postgres';
 
+import { signIn } from '@/auth';
+import { AuthError } from 'next-auth';
+
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
 const FormSchema = z.object({
@@ -29,10 +32,17 @@ export async function createInvoice(formData: FormData) {
 
   console.log(date);
 
-  await sql`
+  try {
+    await sql`
     INSERT INTO invoices (customer_id, amount, status, date)
     VALUES (${customerId}, ${amtInCents}, ${status}, ${date})
-  `;
+    `;
+  } catch (error) {
+    console.error(error);
+    return {
+      message: 'Database Error: Failed to Create Invoice.'
+    };
+  }
 
   revalidatePath('/dashboard/invoices');
   redirect('/dashboard/invoices');
@@ -50,11 +60,18 @@ export async function updateInvoice(id: string, formData: FormData) {
 
   console.log(date);
 
-  await sql`
+  try {
+    await sql`
     UPDATE invoices
     SET customer_id = ${customerId}, amount = ${amtInCents}, status = ${status}
     WHERE id = ${id}
-  `;
+    `;
+  } catch (err) {
+    console.error(err);
+    return {
+      message: 'Database Error: Failed to Update Invoice.'
+    };
+  }
 
   revalidatePath('/dashboard/invoices');
   redirect('/dashboard/invoices');
@@ -63,4 +80,23 @@ export async function updateInvoice(id: string, formData: FormData) {
 export async function deleteInvoice(id: string) {
   await sql`DELETE FROM invoices where id = ${id}`;
   revalidatePath('/dashboard/invoices');
+}
+
+export async function authenticate(
+  prevState: string | undefined,
+  formData: FormData,
+) {
+  try {
+    await signIn('credentials', formData);
+  } catch (error) {
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case 'CredentialsSignin':
+          return 'Invalid credentials.';
+        default:
+          return 'Something went wrong.';
+      }
+    }
+    throw error;
+  }
 }
