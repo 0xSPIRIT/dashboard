@@ -1,0 +1,8 @@
+# Chapter 5
+
+We can use <Link/> instead of <a/> to go between pages in our application so
+we can utilize client-side navigation, rather than having to reload the entire
+page when we click on an <a> tag.
+
+Next.js also prefetches the content of each linked routes for the user,
+rendering it in the background for the user.

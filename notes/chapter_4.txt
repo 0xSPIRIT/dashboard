@@ -1,0 +1,12 @@
+# Chapter 4
+
+The app router converts file paths from the app/ directory into URL paths.
+Each subfolder, (eg. app/dashboard/) can have a page.tsx which is a special
+Next.js file that exports a React component & is required to route that page.
+
+Note that app/page.tsx is the home page that is associated with the '/' route.
+
+The layout.tsx file is one that allows you to share layout between multiple
+pages. For instance, in dashboard/layout.tsx, every sub-route will have that
+layout. Likewise, the default /layout.tsx is applied to everything in your
+application.

@@ -1,0 +1,7 @@
+# Chapter 2
+
+global.css: Adds css rules to all the routes in your application
+Tailwind: A CSS framework that has a ton of builtin utility classes
+CSS Modules: Scope CSS to a particular component, so you don't have to worry about collisions.
+             All class names are transformed during builds to be unique.
+clsx: A simple library that allows you to toggle class names dynamically. Pretty simple stuff.

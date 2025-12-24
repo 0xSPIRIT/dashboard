@@ -1,0 +1,11 @@
+# Chapter 7 - Fetching Data
+
+*Request waterfalls*
+  This is a sequence of network requests that depend on the completion of previous
+  requests. For eg. I query the database for a user ID, then I use that result as
+  input into another network request.
+
+  Sometimes it's better to do them all at once, in parallel, improving efficiency.
+
+*Parallel data fetching*
+  Use await Promise.all(...) to initiate all promises at once.
